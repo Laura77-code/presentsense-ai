@@ -1,0 +1,18 @@
+project:
+  name: PresentSense
+  phase: 1
+
+video:
+  default_width: 1280
+  default_height: 720
+  fallback_fps: 30
+  output_codec: mp4v
+
+face_detection:
+  model_selection: 0
+  min_detection_confidence: 0.5
+
+visualization:
+  show_fps: true
+  show_frame_number: true
+  show_status: true
