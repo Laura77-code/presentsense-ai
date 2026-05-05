@@ -63,14 +63,20 @@ def draw_face_overlay(frame: np.ndarray, detection: Optional[FaceDetectionResult
     draw_text(frame, label, (x, label_y), color=(0, 255, 0), scale=0.6)
 
 
+def draw_emotion_overlay(frame: np.ndarray, label: str, confidence: float, origin: tuple[int, int] = (20, 75)) -> None:
+    """Draw current emotion prediction on the frame."""
+    draw_text(frame, f"Emotion: {label} ({confidence:.2f})", origin, color=(0, 255, 255), scale=0.7)
+
+
 def draw_base_overlay(
     frame: np.ndarray,
     frame_number: int,
     fps: float,
     source_label: str,
+    phase_label: str = "Phase 2: Face + Emotion Pipeline",
 ) -> None:
-    """Draw Phase 1 video metadata overlays."""
+    """Draw video metadata overlays."""
     height, _ = frame.shape[:2]
-    draw_text(frame, "PresentSense | Phase 1: Face Pipeline", (20, height - 70), color=(255, 255, 255), scale=0.65)
+    draw_text(frame, f"PresentSense | {phase_label}", (20, height - 70), color=(255, 255, 255), scale=0.65)
     draw_text(frame, f"Source: {source_label}", (20, height - 45), color=(255, 255, 255), scale=0.6)
     draw_text(frame, f"Frame: {frame_number} | FPS: {fps:.1f}", (20, height - 20), color=(255, 255, 255), scale=0.6)

@@ -1,40 +1,47 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
 .venv/
 venv/
 env/
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
 
-# OS / IDE
+# OS/editor
 .DS_Store
+Thumbs.db
 .vscode/
 .idea/
 
-# Data and large artifacts
+# Environment variables
+.env
+
+# Datasets and heavy local files
 data/*
 !data/.gitkeep
-models/*
-!models/.gitkeep
-outputs/videos/*
-!outputs/videos/.gitkeep
-outputs/reports/*
-!outputs/reports/.gitkeep
-outputs/charts/*
-!outputs/charts/.gitkeep
-outputs/screenshots/*
-!outputs/screenshots/.gitkeep
-*.mp4
-*.avi
-*.mov
-*.mkv
-*.webm
-*.pth
-*.pt
-*.ckpt
+!data/README.md
 
-# Logs
-*.log
+# Model checkpoints can be large. Keep .gitkeep only by default.
+models/*.pth
+models/*.pt
+models/*.ckpt
+!models/.gitkeep
+
+# Outputs: keep folder placeholders, but ignore generated heavy assets by default.
+outputs/videos/*
+outputs/reports/*
+outputs/charts/*
+outputs/screenshots/*
+!outputs/.gitkeep
+!outputs/videos/.gitkeep
+!outputs/reports/.gitkeep
+!outputs/charts/.gitkeep
+!outputs/screenshots/.gitkeep
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
