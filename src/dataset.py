@@ -14,9 +14,6 @@ The code auto-detects the available format and returns PyTorch DataLoaders.
 
 from __future__ import annotations
 
-# pandas is imported lazily only when CSV loading is needed.
-pd = None
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, Optional, Tuple
@@ -74,9 +71,14 @@ def build_transforms(image_size: int = 224) -> Tuple[transforms.Compose, transfo
 
 
 class FER2013CSVDataset(Dataset):
-    """PyTorch Dataset for the classic FER2013 CSV format."""
+    """PyTorch Dataset for the classic FER2013 CSV format.
 
-    def __init__(self, dataframe: pd.DataFrame, transform: Optional[transforms.Compose] = None) -> None:
+    Pandas is intentionally imported lazily in CSV helper functions so webcam
+    inference can run without importing pandas/pyarrow. This avoids occasional
+    Windows pyarrow import issues during real-time demos.
+    """
+
+    def __init__(self, dataframe, transform: Optional[transforms.Compose] = None) -> None:
         self.dataframe = dataframe.reset_index(drop=True)
         self.transform = transform
 
@@ -104,8 +106,9 @@ def _quick_subset(dataset: Dataset, max_samples: Optional[int], seed: int) -> Da
     return Subset(dataset, indices)
 
 
-def _split_csv_by_usage(csv_path: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def _split_csv_by_usage(csv_path: Path):
     import pandas as pd
+
     df = pd.read_csv(csv_path)
     required = {"emotion", "pixels"}
     missing = required - set(df.columns)

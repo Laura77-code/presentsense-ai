@@ -1,20 +1,27 @@
 # Limitations and Ethics
 
-PresentSense is a visual communication feedback prototype. It is not a medical, psychological, or clinical diagnostic tool.
+PresentSense is a computer vision project for presentation practice. It must not be used as a medical, psychological, clinical, hiring, grading, or personality-assessment tool.
 
-## Current Limitations
+## Visual-Only Analysis
 
-- The system analyzes visual information only.
-- It does not analyze speech, voice, slide content, or the meaning of the presentation.
-- FER2013 labels are simplified and may not capture subtle human expressions.
-- Emotion recognition can be affected by lighting, camera angle, camera quality, occlusion, culture, skin tone, and individual expression style.
-- A detected expression should not be interpreted as a true internal emotional state.
-- Eye contact and posture metrics are not implemented until Phase 3.
+The system analyzes visual cues from webcam or video frames only. It does not analyze speech content, voice, slides, or audience response.
+
+## Expression Recognition Limitations
+
+The expression classifier is trained on FER2013, which contains small and noisy facial expression images. Real webcam input may differ from the dataset because of lighting, camera angle, face scale, background, occlusion, and individual expression style. Some classes such as fear, disgust, anger, and surprise can be difficult to classify reliably.
+
+## Looking-Forward Is Approximate
+
+The looking-forward metric is not real gaze tracking. It uses face position and Face Mesh geometry such as nose/eye symmetry and roll angle. A person can look away with their eyes while their face remains frontal, so this metric should be interpreted only as a frontal-face approximation.
+
+## Head/Face Stability Is Not Full-Body Posture
+
+The stability score measures head/face movement in the camera frame. It does not measure spine posture, shoulders, body alignment, or ergonomics.
+
+## Heuristic Scores
+
+The final scores are heuristic communication-practice metrics. They are useful for observing patterns and generating feedback, but they are not absolute measurements of confidence, emotion, engagement, or presentation quality.
 
 ## Privacy
 
-Presentation videos may contain personal biometric information. For a student project, videos should be processed locally when possible and should not be committed to GitHub.
-
-## Responsible Use
-
-The tool should be used as supportive feedback for practice, not as an absolute evaluation of confidence, personality, mental health, or public speaking ability.
+Presentation videos may contain sensitive personal information. The recommended use is local processing whenever possible. Datasets, private videos, and large model files should not be committed to GitHub.

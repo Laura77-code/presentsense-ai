@@ -19,9 +19,14 @@ from src.model import load_model_checkpoint
 
 @dataclass
 class EmotionPrediction:
+    """A smoothed facial-expression prediction for one video frame."""
+
     label: str
     confidence: float
     probabilities: dict[str, float]
+    top_k: list[tuple[str, float]]
+    display_label: str
+    is_uncertain: bool
 
 
 def crop_face_with_margin(frame_bgr: np.ndarray, bbox: tuple[int, int, int, int], margin_ratio: float = 0.20) -> np.ndarray:
@@ -38,13 +43,20 @@ def crop_face_with_margin(frame_bgr: np.ndarray, bbox: tuple[int, int, int, int]
 
 
 class EmotionAnalyzer:
-    """Load a trained emotion model and predict smoothed emotions over time."""
+    """Load a trained emotion model and predict smoothed facial-expression cues."""
 
-    def __init__(self, checkpoint_path: str | Path, device: Optional[str] = None, smoothing_window: int = 5) -> None:
+    def __init__(
+        self,
+        checkpoint_path: str | Path,
+        device: Optional[str] = None,
+        smoothing_window: int = 8,
+        uncertainty_threshold: float = 0.45,
+    ) -> None:
         self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
         self.model, self.checkpoint = load_model_checkpoint(checkpoint_path, device=self.device)
         self.class_names: list[str] = self.checkpoint.get("class_names", FER2013_CLASSES)
         self.history: deque[np.ndarray] = deque(maxlen=max(1, smoothing_window))
+        self.uncertainty_threshold = uncertainty_threshold
         self.transform = transforms.Compose(
             [
                 transforms.Grayscale(num_output_channels=3),
@@ -56,6 +68,7 @@ class EmotionAnalyzer:
 
     @torch.no_grad()
     def predict(self, face_bgr: np.ndarray) -> Optional[EmotionPrediction]:
+        """Predict a smoothed visible facial-expression cue from a BGR face crop."""
         if face_bgr is None or face_bgr.size == 0:
             return None
 
@@ -67,8 +80,21 @@ class EmotionAnalyzer:
 
         self.history.append(probs)
         smoothed = np.mean(np.stack(list(self.history), axis=0), axis=0)
-        idx = int(np.argmax(smoothed))
+
+        sorted_idx = np.argsort(smoothed)[::-1]
+        idx = int(sorted_idx[0])
         label = self.class_names[idx]
         confidence = float(smoothed[idx])
         probabilities = {name: float(smoothed[i]) for i, name in enumerate(self.class_names)}
-        return EmotionPrediction(label=label, confidence=confidence, probabilities=probabilities)
+        top_k = [(self.class_names[int(i)], float(smoothed[int(i)])) for i in sorted_idx[:3]]
+        is_uncertain = confidence < self.uncertainty_threshold
+        display_label = "uncertain" if is_uncertain else label
+
+        return EmotionPrediction(
+            label=label,
+            confidence=confidence,
+            probabilities=probabilities,
+            top_k=top_k,
+            display_label=display_label,
+            is_uncertain=is_uncertain,
+        )

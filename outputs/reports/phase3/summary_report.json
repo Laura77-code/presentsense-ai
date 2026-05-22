@@ -1,0 +1,71 @@
+{
+  "video_info": {
+    "duration_sec": 19.2,
+    "fps": 30.0,
+    "analyzed_frames": 576,
+    "face_detected_frames": 576,
+    "face_detection_rate": 100.0,
+    "face_mesh_detected_frames": 576,
+    "face_mesh_detection_rate": 100.0
+  },
+  "expression_summary": {
+    "dominant_expression": "uncertain",
+    "average_confidence": 0.6727
+  },
+  "emotion_summary": {
+    "dominant_expression": "uncertain",
+    "average_confidence": 0.6727
+  },
+  "expression_percentages": {
+    "happy": 47.05,
+    "sad": 0.17,
+    "surprise": 4.34,
+    "uncertain": 48.44
+  },
+  "emotion_percentages": {
+    "happy": 47.05,
+    "sad": 0.17,
+    "surprise": 4.34,
+    "uncertain": 48.44
+  },
+  "head_face_geometry": {
+    "mean_yaw_proxy": 0.0317,
+    "mean_abs_yaw_proxy": 0.1066,
+    "mean_roll_deg": 2.7986,
+    "mean_abs_roll_deg": 4.1706,
+    "mean_mouth_open_ratio": 0.0125,
+    "mouth_open_variation": 0.027,
+    "eye_open_variation": 0.1743
+  },
+  "movement": {
+    "mean_movement": 0.009021,
+    "max_movement": 0.165896,
+    "mean_landmark_movement": 0.011232,
+    "max_landmark_movement": 0.227257
+  },
+  "scores": {
+    "looking_forward_score": 84.9,
+    "visible_expression_variation_score": 55.8,
+    "head_face_stability_score": 83.76,
+    "expression_variety_score": 39.45,
+    "overall_score": 71.34,
+    "expressiveness_score": 55.8,
+    "posture_stability_score": 83.76,
+    "emotion_balance_score": 39.45
+  },
+  "timeline_highlights": {
+    "strongest_expression_segment_sec": 8.13,
+    "strongest_expression": "happy",
+    "strongest_expression_confidence": 1.0,
+    "lowest_confidence_segment_sec": 0.73,
+    "highest_head_face_movement_segment_sec": 7.5,
+    "max_movement_magnitude": 0.165896,
+    "unstable_movement_segment_sec": 7.5
+  },
+  "method_notes": [
+    "Looking-forward is estimated from face position, nose/eye symmetry, and face roll; it is not real eye tracking.",
+    "Head/face stability is based on face bounding-box and Face Mesh nose movement; it is not full-body posture analysis.",
+    "Visible expression variation combines expression probability diversity with mouth/eye landmark variation.",
+    "Scores are heuristic visual communication metrics for presentation practice."
+  ]
+}

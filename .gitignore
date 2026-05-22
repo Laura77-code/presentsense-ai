@@ -45,3 +45,25 @@ outputs/screenshots/*
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
+
+# Temporary generated reports
+outputs/reports/frame_metrics.csv
+outputs/reports/presentation_report.md
+outputs/reports/summary_report.json
+
+
+# Temporary generated Phase 3 charts at root level
+outputs/charts/phase3_*.png
+
+# Keep curated assets
+!outputs/charts/phase3/
+!outputs/charts/phase3/*.png
+!outputs/reports/phase3/
+!outputs/reports/phase3/*.md
+!outputs/reports/phase3/*.json
+!outputs/screenshots/
+!outputs/screenshots/**/*.png
+
+# Videos: ignore by default
+outputs/videos/*
+!outputs/videos/.gitkeep

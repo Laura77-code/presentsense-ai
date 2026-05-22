@@ -1,67 +1,66 @@
-# PresentSense Methodology
+# Methodology
 
-## Phase 1: Face Detection Pipeline
+## Phase 1: Video and Face Detection Pipeline
 
-The system reads frames from a webcam or local video using OpenCV. Each frame is passed to MediaPipe Face Detection. The highest-confidence face is selected because the target use case is a single presenter practicing in front of a camera.
+PresentSense reads webcam or video frames using OpenCV `VideoCapture`, processes frames sequentially, and overlays results using OpenCV drawing functions. MediaPipe Face Detection is used to locate the presenter's face. If an output path is provided, annotated frames are written with OpenCV `VideoWriter`.
 
-The video overlay includes:
+## Phase 2: Visible Facial Expression Recognition
 
-- Face bounding box.
-- Detection confidence.
-- FPS.
-- Frame number.
-- Source label.
+The expression classifier is trained on FER2013 using transfer learning. The main demo model is a ResNet18 fine-tuned model. During inference, the detected face is cropped with margin, resized to 224 x 224, normalized with ImageNet statistics, and passed through the PyTorch model. The system displays a visible facial expression cue and confidence, not a psychological interpretation.
 
-## Phase 2: Emotion Recognition Pipeline
+## Phase 3.5: Presentation Visual Metrics
 
-Phase 2 adds FER2013 emotion recognition.
+Phase 3.5 uses a hybrid design:
 
-### Preprocessing
+1. A trained expression classifier estimates visible facial expression cues.
+2. MediaPipe Face Mesh landmarks provide simple geometric face measurements.
+3. Temporal aggregation converts frame-level signals into report-level scores.
 
-For each detected face:
+The metrics are heuristic and intended for presentation practice only.
 
-1. Crop the face from the frame.
-2. Add a margin around the bounding box.
-3. Clamp the crop coordinates within the frame boundaries.
-4. Convert the image into a PIL image.
-5. Convert grayscale/RGB input to 3-channel format.
-6. Resize to 224x224.
-7. Normalize using ImageNet mean and standard deviation.
+### Looking-Forward Approximation
 
-### Models
+This is not eye tracking. It estimates whether the presenter is visually oriented toward the camera using:
 
-Four models are implemented:
+- detected face position in the frame,
+- face size,
+- nose position relative to the eye midpoint,
+- approximate face roll from the eye line.
 
-1. Custom CNN from scratch.
-2. ResNet18 pretrained with frozen backbone.
-3. ResNet18 pretrained with last layers fine-tuned.
-4. MobileNetV3 Small pretrained with classifier fine-tuned.
+A frame is counted as looking-forward when the face is centered, reasonably sized, has limited roll, and the nose is close to the midpoint between both eyes.
 
-### Temporal Smoothing
+### Head/Face Stability
 
-Frame-level predictions can flicker. To reduce this, the inference module stores recent probability vectors and averages them over a rolling window. The final label is selected from the averaged probabilities.
+This is not full-body posture analysis. It measures the stability of the face/head in the camera frame using:
 
-### Outputs
+- movement of the face bounding-box center,
+- movement of the Face Mesh nose landmark.
 
-Training generates:
+Excessive motion lowers the score, while small natural movement is allowed.
 
-- Best model checkpoint.
-- Training curves.
-- Confusion matrix.
-- Metrics CSV.
+### Visible Expression Variation
 
-Video analysis generates:
+This is not a measure of true emotion or personality. It estimates whether the visible facial cues vary over time using:
 
-- Annotated webcam/video preview.
-- Optional annotated MP4 output.
+- expression class diversity,
+- variation in expression probabilities,
+- mouth openness variation from Face Mesh,
+- eye openness variation from Face Mesh.
 
-## Phase 3 Preview
+### Expression Variety
 
-The next phase will aggregate frame-level results into presentation metrics:
+Expression variety measures whether a single expression cue dominates the whole video. A low score means that one predicted visible cue appears for most frames. This can also reflect model bias or difficult lighting conditions, so it should be interpreted carefully.
 
-- Emotion distribution.
-- Dominant emotion.
-- Expressiveness score.
-- Looking-forward approximation.
-- Head/posture stability.
-- Final presentation report.
+### Overall Visual Score
+
+The overall score uses a weighted heuristic formula:
+
+```text
+overall_score =
+    0.35 * looking_forward_score
+  + 0.30 * visible_expression_variation_score
+  + 0.25 * head_face_stability_score
+  + 0.10 * expression_variety_score
+```
+
+The final score is supportive feedback only, not an objective grade of presentation ability.
