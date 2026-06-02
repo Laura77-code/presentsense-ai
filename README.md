@@ -4,9 +4,9 @@
 
 **PresentSense** is a Computer Vision final project that analyzes a presentation video or webcam stream and provides visual feedback for presentation practice.
 
-The system detects the presenter's face, estimates model-predicted visible facial expression cues, analyzes Face Mesh geometry, approximates looking-forward behavior, measures head/face stability, and generates a presentation feedback report with charts and recommendations.
+The system detects the presenter's face, estimates **model-predicted visible facial expression cues**, analyzes **Face Mesh geometry**, approximates **looking-forward behavior**, measures **head/face stability**, and generates a presentation feedback report with charts and recommendations.
 
-> **Important:** PresentSense is **not** a medical, psychological, or clinical diagnosis tool. It does not measure true emotions, confidence, personality, mental health, or presentation quality absolutely. It is a visual communication feedback prototype for student presentation practice.
+> **Important:** PresentSense is **not** a medical, psychological, emotion, confidence, personality, or clinical diagnosis tool. It does not measure true emotions, mental health, personality, confidence, or presentation quality absolutely. It is a visual communication feedback prototype for student presentation practice.
 
 ---
 
@@ -16,8 +16,9 @@ The system detects the presenter's face, estimates model-predicted visible facia
 |---|---|---|
 | Phase 1 | Completed | OpenCV + MediaPipe webcam/video face detection pipeline |
 | Phase 2 | Completed | FER2013 expression recognition training and webcam/video inference |
-| Phase 3 | Completed / polishing | Face Mesh visual metrics, looking-forward approximation, head/face stability, expression uncertainty handling, charts, and report generation |
-| Phase 4 | Planned | Streamlit app, dashboard, downloadable reports, and final GitHub polish |
+| Phase 3 | Completed | Face Mesh visual metrics, looking-forward approximation, head/face stability, charts, reports, and recommendations |
+| Phase 3.5 | Completed | Improved uncertainty handling, safer wording, Face Mesh-based cue interpretation, and organized outputs |
+| Phase 4 | Completed | Professional Streamlit app with video upload, dashboard, downloads, reset workflow, webcam recording workflow, downloadable reports, reset workflow, and final README polish |
 
 ---
 
@@ -25,7 +26,7 @@ The system detects the presenter's face, estimates model-predicted visible facia
 
 Students often practice presentations alone and receive feedback only after presenting in class. PresentSense helps students review visual communication cues from a practice recording, such as face visibility, looking-forward behavior, head/face stability, visible facial cue variation, and camera presence.
 
-The goal is to provide supportive feedback for improving presentation delivery, not to judge personality, confidence, or real emotion.
+The goal is to provide **supportive feedback** for improving presentation delivery, not to judge personality, confidence, real emotion, or communication ability absolutely.
 
 ---
 
@@ -50,6 +51,7 @@ This project connects directly with core Computer Vision topics:
 - Confusion matrix and classification metrics.
 - Chart generation with Matplotlib.
 - Markdown/JSON/CSV report generation.
+- Streamlit app integration for an interactive user interface.
 
 ---
 
@@ -84,7 +86,7 @@ This project connects directly with core Computer Vision topics:
 - Rolling probability smoothing.
 - Uncertainty handling for low-confidence predictions.
 
-### Phase 3: Presentation Visual Metrics
+### Phase 3 and 3.5: Presentation Visual Metrics
 
 - Face Mesh landmark extraction.
 - Model-predicted visible expression cue timeline.
@@ -92,6 +94,7 @@ This project connects directly with core Computer Vision topics:
 - Looking-forward approximation.
 - Head/face stability analysis.
 - Mouth openness over time.
+- Eye openness variation as part of visible expression variation.
 - Visible expression variation score.
 - Expression variety score.
 - Per-frame metric export.
@@ -99,10 +102,69 @@ This project connects directly with core Computer Vision topics:
 - Markdown presentation feedback report.
 - Recommendation generation.
 - Charts exported to `outputs/charts/`.
+- Safer reporting language to avoid claiming real emotion, confidence, or real eye contact.
+
+### Phase 4: Streamlit Presentation Feedback App
+
+Phase 4 adds a professional Streamlit interface so the project can be used like a small product instead of only a set of scripts.
+
+The app is designed around the idea:
+
+> Upload your practice presentation and get visual feedback.
+
+The Streamlit app allows the user to:
+
+- Upload a practice presentation video.
+- Analyze it using the existing `analyze_video.py` pipeline.
+- View a clean results dashboard.
+- Review the annotated video if video export is enabled.
+- Read friendly non-technical feedback.
+- Inspect detailed charts.
+- Download the full analysis as a ZIP file.
+- Download individual analysis files.
+- Clear the current analysis and upload another video.
+- Record a webcam demo using the existing OpenCV pipeline and load the generated dashboard after the OpenCV window closes.
 
 ---
 
-## Demo
+## Final Demo
+
+### Phase 4 Streamlit App
+
+The final app provides a simple workflow for students and teachers:
+
+1. Upload a short practice presentation video.
+2. Adjust the analysis settings from the sidebar if needed.
+3. Run the analysis.
+4. Review the dashboard, recommendations, charts, and generated report.
+5. Download the analysis files.
+6. Clear the current analysis and test another video.
+
+![Phase 4 Home](outputs/screenshots/phase4/phase4_home.png)
+
+![Phase 4 Sidebar](outputs/screenshots/phase4/phase4_sidebar.png)
+
+![Phase 4 Upload Video](outputs/screenshots/phase4/phase4_upload_video.png)
+
+![Phase 4 Webcam Demo](outputs/screenshots/phase4/phase4_webcam.png)
+
+![Phase 4 Results example](outputs/screenshots/phase4/phase4_results.png)
+
+![Phase 4 Detailed Charts](outputs/screenshots/phase4/phase4_chart1.png)(outputs/screenshots/phase4/phase4_chart2.png)(outputs/screenshots/phase4/phase4_chart3.png)(outputs/screenshots/phase4/phase4_chart4.png)(outputs/screenshots/phase4/phase4_chart5.png)
+
+![Phase 4 Feedback Report](outputs/screenshots/phase4/phase4_feedbackReport1.png)(outputs/screenshots/phase4/phase4_feedbackReport2.png)
+
+![Phase 4 Download and Reset Workflow](outputs/screenshots/phase4/phase4_download_reset.png)
+
+Final demo video:
+
+[Watch Final Phase 4 Demo on YouTube](https://www.youtube.com/watch?v=1owUAk8xLGc)
+
+> The final demo video is hosted on YouTube instead of being committed to the repository to avoid storing large video files in Git.
+
+---
+
+## Demo by Phase
 
 ### Phase 1: Face Detection
 
@@ -192,27 +254,318 @@ Optional demo video:
 
 [Watch Phase 3 Visual Metrics Demo](outputs/videos/phase3_visual_metrics_demo.mp4)
 
-> If videos are not committed because of file size, run the demo locally using the commands below.
+---
+
+## How to Test the Project
+
+### 1. Clone the Repository
+
+```powershell
+git clone <repository-url>
+cd presentsense
+```
+
+### 2. Create and Activate the Environment
+
+Recommended location on Windows:
+
+```powershell
+C:\cv\presentsense
+```
+
+Create and activate the environment:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 3. Add the Model Checkpoint
+
+The trained model checkpoint is ignored by Git because it can be large.
+
+Place the best Phase 2 model here:
+
+```text
+models/best_exp03_resnet18_finetune.pth
+```
+
+This is the default model used by the app.
+
+### 4. Prepare a Test Video
+
+Record a short presentation practice video of 20 to 30 seconds and save it here:
+
+```text
+data/samples/phase4_practice_presentation.mp4
+```
+
+Recommended test behavior:
+
+```text
+0–8s: look at the camera and speak normally.
+8–15s: look slightly to the side as if checking notes.
+15–22s: return to the camera and smile slightly.
+22–30s: move your head naturally while speaking.
+```
+
+This gives the system enough variation to test looking-forward, movement, and expression cues.
+
+### 5. Run the Streamlit App
+
+```powershell
+streamlit run app.py
+```
+
+The app opens in the browser.
+
+Use the **Upload Video** tab to upload:
+
+```text
+data/samples/phase4_practice_presentation.mp4
+```
+
+Then click:
+
+```text
+Analyze Uploaded Video
+```
+
+### 6. Test the Webcam Demo
+
+Open the **Webcam Demo** tab and click:
+
+```text
+Record webcam and analyze
+```
+
+When the OpenCV camera window opens, record a short 10 to 30 second presentation sample. Press `q` or `ESC` inside the OpenCV window to stop. After the window closes, the Streamlit dashboard should load the generated webcam results automatically.
+
+### 7. Review the Results
+
+After analysis, the app displays:
+
+- Results dashboard.
+- What went well.
+- What to improve.
+- Annotated video, if enabled.
+- Detailed charts.
+- Markdown report.
+- Download buttons.
+- Reset button for analyzing another video.
+
+### 8. Download the Analysis
+
+The app provides a full ZIP download containing the generated analysis files when available:
+
+```text
+presentation_report.md
+summary_report.json
+frame_metrics.csv
+charts/*.png
+annotated_video.mp4
+```
+
+### 9. Analyze Another Video
+
+Use the reset button:
+
+```text
+Clear current analysis and upload another video
+```
+
+This clears temporary app-generated files and resets the upload workflow.
+
+---
+
+## Streamlit App Guide
+
+### Main Page
+
+The main page introduces PresentSense as a visual-only presentation practice tool. It includes an ethics note explaining that the system is not a diagnosis tool and should not be used to infer real emotion, confidence, personality, or mental health.
+
+### Tabs
+
+#### Upload Video
+
+Use this tab to upload and analyze a local presentation video.
+
+Supported formats:
+
+```text
+MP4, MOV, AVI, WEBM
+```
+
+The uploaded video is saved locally under:
+
+```text
+outputs/app/uploads/
+```
+
+The generated app outputs are saved under:
+
+```text
+outputs/app/
+├── uploads/
+├── videos/
+├── reports/
+└── charts/
+```
+
+#### Webcam Demo
+
+This tab records directly from the user's webcam using the existing OpenCV pipeline. The app opens the local OpenCV camera window because the real-time webcam loop runs outside the browser.
+
+Click:
+
+```text
+Record webcam and analyze
+```
+
+Then press `q` or `ESC` inside the OpenCV window to stop recording. When the window closes, the app copies the generated reports, charts, and annotated video into `outputs/app/` and displays the dashboard automatically.
+
+#### Latest Results
+
+This tab loads the latest available results from the previous analysis. It is useful when the pipeline was run from the command line or when the user wants to review the most recent output without uploading a new video.
+
+### Sidebar Settings
+
+The sidebar contains the main analysis settings.
+
+#### Model path
+
+Default:
+
+```text
+models/best_exp03_resnet18_finetune.pth
+```
+
+This is the path to the trained facial expression model used by the pipeline.
+
+#### Uncertainty threshold
+
+Default:
+
+```text
+0.60
+```
+
+This controls how confident the expression classifier must be before showing a visible expression label. If the confidence is below the threshold, the frame is labeled as:
+
+```text
+uncertain
+```
+
+This avoids forcing unreliable predictions.
+
+#### Frame step
+
+Default:
+
+```text
+1
+```
+
+This controls how many frames are skipped during analysis.
+
+- `1` analyzes every frame.
+- Higher values make the analysis faster but less detailed.
+
+#### Use Face Mesh
+
+Enables Face Mesh landmark analysis. When enabled, the system estimates additional visual cues such as:
+
+- Looking-forward approximation.
+- Head/face stability.
+- Mouth openness.
+- Landmark-based movement.
+
+#### Save annotated video
+
+When enabled, the pipeline exports an annotated video showing overlays such as:
+
+- Face box.
+- Visible expression cue.
+- Confidence.
+- Looking-forward status.
+- Movement status.
+- FPS and elapsed time.
+
+#### Debug overlay
+
+When enabled, the overlay can show more technical values, such as yaw proxy, roll angle, and raw mouth openness. This is useful for development but is not necessary for normal users.
+
+#### Privacy note
+
+The app processes videos locally in the project environment. Temporary app-generated files are saved under:
+
+```text
+outputs/app/
+```
+
+These temporary files should not be committed to GitHub.
+
+---
+
+## Results Dashboard
+
+After analysis, the app displays visual feedback cards.
+
+| Metric | Meaning |
+|---|---|
+| Overall Score | General heuristic score based on visual communication cues. |
+| Looking Forward | Approximation of whether the face is visually oriented toward the camera. |
+| Head/Face Stability | How stable the face position appears during the recording. |
+| Expression Variation | How much visible expression variation appears in the video. |
+| Expression Variety | How balanced the model-predicted visible cues are. |
+| Face Visibility | Percentage of frames where a face was detected. |
+| Face Mesh Detection | Percentage of frames where Face Mesh landmarks were detected. |
+| Average Model Confidence | Average confidence of the expression classifier. |
+
+These scores are heuristic and are intended only for supportive presentation practice feedback.
+
+---
+
+## Feedback Sections
+
+The app separates recommendations into two friendly sections.
+
+### What went well
+
+Examples:
+
+- You stayed visually oriented toward the camera for most of the recording.
+- Your head/face movement was stable, which helps the audience focus.
+- Your face visibility was strong during the video.
+- Positive or warm model-predicted cues appeared during the recording.
+
+### What to improve
+
+Examples:
+
+- Many frames were uncertain. Try improving lighting and camera angle.
+- Try adding more natural facial emphasis during key points.
+- Reduce excessive head movement if the movement score is high.
+- Keep the camera closer to eye level.
+- Avoid strongly interpreting expression labels when confidence is low.
 
 ---
 
 ## Dataset
 
-The expression recognition model uses **FER2013** from Kaggle: *Facial Expression Recognition Challenge*.
+The expression recognition model was trained using FER2013.
 
-Expected classes:
+Dataset link:
+
+- FER2013 on Kaggle: https://www.kaggle.com/datasets/msambare/fer2013
+
+The dataset is not included in this repository because of size and licensing considerations. To reproduce training, download it from Kaggle and place it under:
 
 ```text
-angry
-disgust
-fear
-happy
-neutral
-sad
-surprise
+data/fer2013/
 ```
-
-The dataset is not included in this repository. Do not commit the dataset to GitHub.
 
 ### Option A: Folder Format
 
@@ -308,105 +661,66 @@ python -c "import torch; print(torch.__version__); print(torch.cuda.is_available
 
 ---
 
-## Running Phase 1
+## Running the Original CLI Commands
 
-### Webcam
+The original command-line workflow still works.
+
+### Phase 1 Webcam
 
 ```powershell
 python analyze_video.py --source webcam
 ```
 
-### Webcam with saved video
+### Phase 1 Webcam with Saved Video
 
 ```powershell
 python analyze_video.py --source webcam --output outputs/videos/phase1_webcam_demo.mp4
 ```
 
-### Local video
-
-```powershell
-python analyze_video.py --source data/samples/presentation.mp4 --output outputs/videos/phase1_video_demo.mp4
-```
-
----
-
-## Training Phase 2 Models
-
-First, place FER2013 in `data/fer2013/`.
-
-### Quick Test
-
-```powershell
-python train.py --experiment exp02_resnet18_frozen --epochs 1 --batch-size 16 --quick-test
-```
-
-### Full Experiments
-
-```powershell
-python train.py --experiment exp01_custom_cnn --epochs 10 --batch-size 32
-python train.py --experiment exp02_resnet18_frozen --epochs 10 --batch-size 32
-python train.py --experiment exp03_resnet18_finetune --epochs 10 --batch-size 16
-python train.py --experiment exp04_mobilenet_finetune --epochs 20 --batch-size 32
-```
-
-The best model from the completed experiments was:
-
-```text
-models/best_exp03_resnet18_finetune.pth
-```
-
-Model checkpoints are ignored by Git by default because they can be large.
-
----
-
-## Running Phase 2 Expression Demo
+### Phase 2 Expression Demo
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth
 ```
 
-Save an annotated video:
+### Phase 2 Saved Demo
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth --output outputs/videos/phase2_resnet18_emotion_demo.mp4
 ```
 
----
-
-## Running Phase 3 Visual Metrics
-
-Run full visual analysis with expression inference, Face Mesh metrics, charts, and reports:
+### Phase 3 Visual Metrics
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth
 ```
 
-Save a Phase 3 demo video:
+### Phase 3 Saved Demo
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth --output outputs/videos/phase3_visual_metrics_demo.mp4
 ```
 
-Analyze a local video:
+### Analyze a Local Video
 
 ```powershell
-python analyze_video.py --source data/samples/presentation.mp4 --model models/best_exp03_resnet18_finetune.pth --output outputs/videos/phase3_video_demo.mp4
+python analyze_video.py --source data/samples/phase4_practice_presentation.mp4 --model models/best_exp03_resnet18_finetune.pth --output outputs/videos/phase4_final_demo.mp4
 ```
 
-If Face Mesh is slow, disable it:
+### Disable Face Mesh if Needed
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth --no-face-mesh
 ```
 
-Adjust uncertainty threshold:
+### Adjust Uncertainty Threshold
 
 ```powershell
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth --uncertainty-threshold 0.55
 python analyze_video.py --source webcam --model models/best_exp03_resnet18_finetune.pth --uncertainty-threshold 0.65
 ```
 
-Generated files:
+Generated root-level files:
 
 ```text
 outputs/reports/frame_metrics.csv
@@ -425,6 +739,7 @@ Curated example assets are stored in:
 outputs/charts/phase3/
 outputs/reports/phase3/
 outputs/screenshots/phase3/
+outputs/screenshots/phase4/
 ```
 
 ---
@@ -559,7 +874,8 @@ presentsense/
 │   ├── presentation_metrics.py
 │   ├── recommendations.py
 │   ├── visualization.py
-│   └── report_generator.py
+│   ├── report_generator.py
+│   └── streamlit_utils.py
 ├── scripts/
 ├── notebooks/
 ├── data/
@@ -567,6 +883,11 @@ presentsense/
 ├── models/
 │   └── .gitkeep
 ├── outputs/
+│   ├── app/
+│   │   ├── uploads/
+│   │   ├── videos/
+│   │   ├── reports/
+│   │   └── charts/
 │   ├── charts/
 │   │   ├── exp03_resnet18_finetune_confusion_matrix.png
 │   │   ├── exp03_resnet18_finetune_training_curves.png
@@ -579,19 +900,21 @@ presentsense/
 │   ├── screenshots/
 │   │   ├── phase1/
 │   │   ├── phase2/
-│   │   └── phase3/
+│   │   ├── phase3/
+│   │   └── phase4/
 │   └── videos/
 └── docs/
     ├── methodology.md
     ├── experiments.md
-    └── limitations.md
+    ├── limitations.md
+    └── final_submission_checklist.md
 ```
 
 ---
 
 ## GitHub and Large Files
 
-This repository should not include large datasets or large model checkpoints.
+This repository should not include large datasets, large model checkpoints, or temporary app-generated files.
 
 Ignored by default:
 
@@ -600,11 +923,28 @@ data/*
 models/*.pth
 models/*.pt
 .venv/
+outputs/app/uploads/*
+outputs/app/videos/*
+outputs/app/reports/*
+outputs/app/charts/*
 outputs/videos/*
 temporary root-level reports and charts
 ```
 
 Curated charts, screenshots, and example reports can be committed for README/demo purposes.
+
+Recommended files to commit for Phase 4 documentation:
+
+```text
+outputs/screenshots/phase4/phase4_home.png
+outputs/screenshots/phase4/phase4_sidebar.png
+outputs/screenshots/phase4/phase4_upload_video.png
+outputs/screenshots/phase4/phase4_results_dashboard.png
+outputs/screenshots/phase4/phase4_charts.png
+outputs/screenshots/phase4/phase4_download_reset.png
+```
+
+The final Phase 4 demo video is hosted externally on YouTube, so no large demo video needs to be committed to Git.
 
 ---
 
@@ -620,4 +960,20 @@ Curated charts, screenshots, and example reports can be committed for README/dem
 - Scores and recommendations are heuristic and should be used as supportive feedback, not absolute judgment.
 - Videos should be processed locally when possible to protect privacy.
 
+---
 
+## Future Work
+
+- Improve eye openness and gaze-related visual cues.
+- Add eyebrow movement proxy if stable enough.
+- Improve facial expression classification with a better dataset or domain adaptation.
+- Add audio and speech analysis.
+- Add slide synchronization.
+- Add multilingual feedback.
+- Improve deployment options for the Streamlit app.
+
+---
+
+## License
+
+MIT License.

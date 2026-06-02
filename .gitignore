@@ -67,3 +67,16 @@ outputs/charts/phase3_*.png
 # Videos: ignore by default
 outputs/videos/*
 !outputs/videos/.gitkeep
+
+
+# PresentSense app-generated temporary outputs
+outputs/app/uploads/*
+outputs/app/videos/*
+outputs/app/reports/*
+outputs/app/charts/*
+!outputs/app/uploads/.gitkeep
+!outputs/app/videos/.gitkeep
+!outputs/app/reports/.gitkeep
+!outputs/app/charts/.gitkeep
+
+
