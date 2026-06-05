@@ -140,21 +140,34 @@ The final app provides a simple workflow for students and teachers:
 5. Download the analysis files.
 6. Clear the current analysis and test another video.
 
-![Phase 4 Home](outputs/screenshots/phase4/phase4_home.png)
+-Home
+![Phase 4 Home](./outputs/screenshots/phase4/phase4_home.png)
 
-![Phase 4 Sidebar](outputs/screenshots/phase4/phase4_sidebar.png)
+-Sidebar
+![Phase 4 Sidebar](./outputs/screenshots/phase4/phase4_sidebar.png)
 
-![Phase 4 Upload Video](outputs/screenshots/phase4/phase4_upload_video.png)
+-Upload video 
+![Phase 4 Upload Video](./outputs/screenshots/phase4/phase4_upload_video.png)
 
-![Phase 4 Webcam Demo](outputs/screenshots/phase4/phase4_webcam.png)
+-Webcan demo
+![Phase 4 Webcam Demo](./outputs/screenshots/phase4/phase4_webcam.png)
 
-![Phase 4 Results example](outputs/screenshots/phase4/phase4_results.png)
+-Results
+![Phase 4 Results ](./outputs/screenshots/phase4/phase4_results.png)
 
-![Phase 4 Detailed Charts](outputs/screenshots/phase4/phase4_chart1.png)(outputs/screenshots/phase4/phase4_chart2.png)(outputs/screenshots/phase4/phase4_chart3.png)(outputs/screenshots/phase4/phase4_chart4.png)(outputs/screenshots/phase4/phase4_chart5.png)
+-Charts
+![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart1.png)
+![Phase 4 Expression timeline Graph](./outputs/screenshots/phase4/phase4_chart2.png)
+![Phase 4 Looking Forward Aproximation Over Time Graph](./outputs/screenshots/phase4/phase4_chart3.png)
+![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart4.png)
+![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart5.png)
 
-![Phase 4 Feedback Report](outputs/screenshots/phase4/phase4_feedbackReport1.png)(outputs/screenshots/phase4/phase4_feedbackReport2.png)
+-Feedback Report
+![Phase 4 Feedback Report](./outputs/screenshots/phase4/phase4_feedbackReport1.png)(outputs/screenshots/phase4/phase4_feedbackReport2.png)
 
-![Phase 4 Download and Reset Workflow](outputs/screenshots/phase4/phase4_download_reset.png)
+Download and Reset flow
+![Phase 4 Download and Reset Workflow](./outputs/screenshots/phase4/phase4_download_reset.png)
+
 
 Final demo video:
 

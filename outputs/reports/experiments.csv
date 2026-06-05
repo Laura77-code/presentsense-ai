@@ -1,0 +1,4 @@
+experiment,epochs,batch_size,dataset_format,train_size,val_size,test_size,best_val_accuracy,test_accuracy,macro_precision,macro_recall,macro_f1,checkpoint
+exp04_mobilenet_finetune,10,32,folder,24403,4306,7178,0.4949,0.4953,0.4868,0.4228,0.4274,models\best_exp04_mobilenet_finetune.pth
+exp03_resnet18_finetune,10,16,folder,24403,4306,7178,0.6514,0.6411,0.6494,0.5932,0.6087,models\best_exp03_resnet18_finetune.pth
+exp04_mobilenet_finetune,20,32,folder,24403,4306,7178,0.5142,0.5149,0.4821,0.4523,0.4562,models\best_exp04_mobilenet_finetune.pth
