@@ -18,7 +18,7 @@ The system detects the presenter's face, estimates **model-predicted visible fac
 | Phase 2 | Completed | FER2013 expression recognition training and webcam/video inference |
 | Phase 3 | Completed | Face Mesh visual metrics, looking-forward approximation, head/face stability, charts, reports, and recommendations |
 | Phase 3.5 | Completed | Improved uncertainty handling, safer wording, Face Mesh-based cue interpretation, and organized outputs |
-| Phase 4 | Completed | Professional Streamlit app with video upload, dashboard, downloads, reset workflow, webcam recording workflow, downloadable reports, reset workflow, and final README polish |
+| Phase 4 | Completed | Professional Streamlit app with video upload, dashboard, downloads, reset workflow, webcam recording workflow, downloadable reports, reset workflow |
 
 ---
 
@@ -123,7 +123,7 @@ The Streamlit app allows the user to:
 - Download the full analysis as a ZIP file.
 - Download individual analysis files.
 - Clear the current analysis and upload another video.
-- Record a webcam demo using the existing OpenCV pipeline and load the generated dashboard after the OpenCV window closes.
+- Launch the webcam demo using the existing OpenCV pipeline.
 
 ---
 
@@ -131,141 +131,188 @@ The Streamlit app allows the user to:
 
 ### Phase 4 Streamlit App
 
-The final app provides a simple workflow for students and teachers:
+The final version of PresentSense includes a Streamlit interface that makes the project easier to use as a presentation practice tool.
 
-1. Upload a short practice presentation video.
-2. Adjust the analysis settings from the sidebar if needed.
-3. Run the analysis.
-4. Review the dashboard, recommendations, charts, and generated report.
-5. Download the analysis files.
-6. Clear the current analysis and test another video.
+The app follows this workflow:
 
--Home
-![Phase 4 Home](./outputs/screenshots/phase4/phase4_home.png)
-
--Sidebar
-![Phase 4 Sidebar](./outputs/screenshots/phase4/phase4_sidebar.png)
-
--Upload video 
-![Phase 4 Upload Video](./outputs/screenshots/phase4/phase4_upload_video.png)
-
--Webcan demo
-![Phase 4 Webcam Demo](./outputs/screenshots/phase4/phase4_webcam.png)
-
--Results
-![Phase 4 Results ](./outputs/screenshots/phase4/phase4_results.png)
-
--Charts
-![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart1.png)
-![Phase 4 Expression timeline Graph](./outputs/screenshots/phase4/phase4_chart2.png)
-![Phase 4 Looking Forward Aproximation Over Time Graph](./outputs/screenshots/phase4/phase4_chart3.png)
-![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart4.png)
-![Phase 4 Expression distribution Graph](./outputs/screenshots/phase4/phase4_chart5.png)
-
--Feedback Report
-![Phase 4 Feedback Report](./outputs/screenshots/phase4/phase4_feedbackReport1.png)(outputs/screenshots/phase4/phase4_feedbackReport2.png)
-
-Download and Reset flow
-![Phase 4 Download and Reset Workflow](./outputs/screenshots/phase4/phase4_download_reset.png)
-
+1. Open the Streamlit app.
+2. Review the sidebar settings.
+3. Upload a short practice presentation video or use the webcam demo.
+4. Run the analysis.
+5. Review the visual feedback dashboard.
+6. Inspect the generated charts and report.
+7. Download the full analysis.
+8. Clear the current analysis and test another video.
 
 Final demo video:
 
-[Watch Final Phase 4 Demo on YouTube](https://www.youtube.com/watch?v=1owUAk8xLGc)
+[Watch Final Phase 4 Demo](https://www.youtube.com/watch?v=1owUAk8xLGc)
 
-> The final demo video is hosted on YouTube instead of being committed to the repository to avoid storing large video files in Git.
-
----
-
-## Demo by Phase
-
-### Phase 1: Face Detection
-
-Phase 1 validates the real-time OpenCV/MediaPipe video pipeline.
-
-![Phase 1 Webcam Face Detection](outputs/screenshots/phase1/phase1_webcam_face_detection.png)
-
-Optional demo video:
-
-[Watch Phase 1 Webcam Demo](outputs/videos/phase1_webcam_demo.mp4)
+> The video demo shows the complete Phase 4 workflow, including the Streamlit interface, analysis results, charts, feedback report, and download/reset workflow.
 
 ---
 
-### Phase 2: Face + Expression Recognition
+### 1. Home Page
 
-Phase 2 adds a FER2013-trained expression recognition model. The model predicts visible facial expression cues from the detected face crop.
+The home page introduces PresentSense as a visual-only presentation practice tool and includes an ethics note explaining that the system is not a diagnosis tool.
 
-#### Happy Example
-
-![Phase 2 Happy Expression](outputs/screenshots/phase2/happy.png)
-
-#### Sad Example
-
-![Phase 2 Sad Expression](outputs/screenshots/phase2/sad.png)
-
-#### Known Limitation Example
-
-The classifier can confuse expressions in real webcam conditions because FER2013 differs from live camera footage in lighting, resolution, pose, and expression intensity.
-
-![Phase 2 Known Error](outputs/screenshots/phase2/neutral_error.png)
-
-Optional demo video:
-
-[Watch Phase 2 ResNet18 Expression Demo](outputs/videos/phase2_resnet18_emotion_demo.mp4)
+![Phase 4 Home](./outputs/screenshots/phase4/phase4_home.png)
 
 ---
 
-### Phase 3: Visual Metrics and Report Generation
+### 2. Sidebar Settings
 
-Phase 3 combines expression inference with Face Mesh geometry and temporal aggregation.
+The sidebar allows the user to configure the analysis before running the pipeline.
 
-Example Phase 3.5 demo results:
+Available settings include:
 
-| Metric | Value |
-|---|---:|
-| Duration | 19.2 seconds |
-| Analyzed frames | 576 |
-| Face detection rate | 100.0% |
-| Face Mesh detection rate | 100.0% |
-| Average model confidence | 0.6727 |
-| Looking-forward approximation | 84.9 / 100 |
-| Visible expression variation | 55.8 / 100 |
-| Head/face stability | 83.76 / 100 |
-| Expression variety | 39.45 / 100 |
-| Overall visual score | 71.34 / 100 |
+- Model path.
+- Uncertainty threshold.
+- Frame step.
+- Face Mesh toggle.
+- Annotated video export.
+- Debug overlay.
 
-The dominant model-predicted visible cue was `uncertain`, which means many frames were below the confidence threshold. This is intentional: the system avoids forcing expression labels when the classifier is not confident enough.
+![Phase 4 Sidebar](./outputs/screenshots/phase4/phase4_sidebar.png)
+
+---
+
+### 3. Upload Video Workflow
+
+The user can upload a local practice presentation video and analyze it with the existing `analyze_video.py` pipeline.
+
+Supported formats include:
+
+```text
+MP4, MOV, AVI, WEBM
+```
+
+![Phase 4 Upload Video](./outputs/screenshots/phase4/phase4_upload_video.png)
+
+---
+
+### 4. Webcam Demo
+
+The webcam tab launches the existing OpenCV webcam pipeline from the Streamlit app.
+
+The webcam opens in a separate local OpenCV window. To stop the recording and finish the analysis, press:
+
+```text
+q
+```
+
+or:
+
+```text
+ESC
+```
+
+![Phase 4 Webcam Demo](./outputs/screenshots/phase4/phase4_webcam.png)
+
+---
+
+### 5. Results Dashboard and Feedback
+
+After analysis, the app displays a clear dashboard with visual communication metrics and friendly feedback.
+
+The dashboard includes:
+
+- Overall score.
+- Looking-forward approximation.
+- Head/face stability.
+- Expression variation.
+- Expression variety.
+- Face visibility.
+- Face Mesh detection rate.
+- Average model confidence.
+
+The feedback section separates recommendations into:
+
+- What went well.
+- What to improve.
+
+![Phase 4 Results Example](./outputs/screenshots/phase4/phase4_results.png)
+
+---
+
+### 6. Detailed Charts
+
+The app displays the visual analysis charts generated by the Phase 3 pipeline.
+
+These charts help review how the presentation changed over time.
 
 #### Expression Distribution
 
-![Phase 3 Expression Distribution](outputs/charts/phase3/phase3_expression_distribution.png)
+![Phase 4 Expression Distribution](./outputs/screenshots/phase4/phase4_chart1.png)
 
 #### Expression Timeline
 
-![Phase 3 Expression Timeline](outputs/charts/phase3/phase3_expression_timeline.png)
+![Phase 4 Expression Timeline](./outputs/screenshots/phase4/phase4_chart2.png)
 
 #### Looking-Forward Approximation
 
-![Phase 3 Looking Forward](outputs/charts/phase3/phase3_looking_forward_over_time.png)
+![Phase 4 Looking Forward Chart](./outputs/screenshots/phase4/phase4_chart3.png)
 
 #### Head/Face Movement
 
-![Phase 3 Head Face Movement](outputs/charts/phase3/phase3_head_face_movement_over_time.png)
+![Phase 4 Head Face Movement Chart](./outputs/screenshots/phase4/phase4_chart4.png)
 
 #### Mouth Openness
 
-![Phase 3 Mouth Openness](outputs/charts/phase3/phase3_mouth_openness_over_time.png)
+![Phase 4 Mouth Openness Chart](./outputs/screenshots/phase4/phase4_chart5.png)
 
-Example generated reports:
+---
+
+### 7. Generated Feedback Report
+
+The app also renders the generated Markdown report inside Streamlit.
+
+The report includes:
+
+- Video information.
+- Visible expression summary.
+- Geometric Face Mesh cues.
+- Visual communication scores.
+- Timeline highlights.
+- Generated chart paths.
+- Recommendations.
+- Limitations.
+
+![Phase 4 Feedback Report Part 1](./outputs/screenshots/phase4/phase4_feedbackReport1.png)
+
+![Phase 4 Feedback Report Part 2](./outputs/screenshots/phase4/phase4_feedbackReport2.png)
+
+---
+
+### 8. Download and Reset Workflow
+
+The app allows the user to download all generated analysis files as a ZIP file.
+
+The downloadable analysis can include:
 
 ```text
-outputs/reports/phase3/presentation_report_example.md
-outputs/reports/phase3/summary_report_example.json
+presentation_report.md
+summary_report.json
+frame_metrics.csv
+charts/*.png
+annotated_video.mp4
 ```
 
-Optional demo video:
+The reset button clears the current temporary app-generated files and prepares the app for another video.
 
-[Watch Phase 3 Visual Metrics Demo](outputs/videos/phase3_visual_metrics_demo.mp4)
+![Phase 4 Download and Reset Workflow](./outputs/screenshots/phase4/phase4_download_reset.png)
+
+> Temporary app-generated files are saved under `outputs/app/` and should not be committed to GitHub. Only curated screenshots and documentation assets are included in the repository.
+
+---
+
+## Previous Phase Demos
+
+The final project version is demonstrated in the **Phase 4 Streamlit App** section above.
+
+Previous intermediate demos are documented separately to keep this README focused on the final product:
+
+[View Phase 1, Phase 2, and Phase 3 demo history](docs/demo_history.md)
 
 ---
 
@@ -346,17 +393,7 @@ Then click:
 Analyze Uploaded Video
 ```
 
-### 6. Test the Webcam Demo
-
-Open the **Webcam Demo** tab and click:
-
-```text
-Record webcam and analyze
-```
-
-When the OpenCV camera window opens, record a short 10 to 30 second presentation sample. Press `q` or `ESC` inside the OpenCV window to stop. After the window closes, the Streamlit dashboard should load the generated webcam results automatically.
-
-### 7. Review the Results
+### 6. Review the Results
 
 After analysis, the app displays:
 
@@ -369,7 +406,7 @@ After analysis, the app displays:
 - Download buttons.
 - Reset button for analyzing another video.
 
-### 8. Download the Analysis
+### 7. Download the Analysis
 
 The app provides a full ZIP download containing the generated analysis files when available:
 
@@ -381,7 +418,7 @@ charts/*.png
 annotated_video.mp4
 ```
 
-### 9. Analyze Another Video
+### 8. Analyze Another Video
 
 Use the reset button:
 
@@ -429,15 +466,21 @@ outputs/app/
 
 #### Webcam Demo
 
-This tab records directly from the user's webcam using the existing OpenCV pipeline. The app opens the local OpenCV camera window because the real-time webcam loop runs outside the browser.
+This tab launches the existing OpenCV webcam pipeline in a separate window.
 
-Click:
+To stop the webcam demo, press:
 
 ```text
-Record webcam and analyze
+q
 ```
 
-Then press `q` or `ESC` inside the OpenCV window to stop recording. When the window closes, the app copies the generated reports, charts, and annotated video into `outputs/app/` and displays the dashboard automatically.
+or:
+
+```text
+ESC
+```
+
+This preserves the original real-time webcam workflow while making it accessible from the app.
 
 #### Latest Results
 
@@ -865,6 +908,49 @@ Interpretation: the system detected the face and Face Mesh reliably. Expression 
 
 ---
 
+## Architecture
+
+PresentSense uses a layered architecture. The main design decision was to keep the working Computer Vision pipeline in `analyze_video.py` and use Streamlit as a product-style interface around it. This keeps the webcam/video processing stable while making the project easier to use.
+
+```mermaid
+flowchart TD
+    A["Input Layer<br/>Webcam / Uploaded Video / FER2013 Dataset"] --> B["Computer Vision Core<br/>MediaPipe Face Detection<br/>MediaPipe Face Mesh<br/>ResNet18 Expression Classifier"]
+
+    B --> C["Analysis Layer<br/>Expression Smoothing<br/>Uncertainty Thresholding<br/>Face Landmark Metrics<br/>Temporal Aggregation"]
+
+    C --> D["Output Layer<br/>Annotated Video<br/>Charts<br/>CSV / JSON / Markdown Reports"]
+
+    D --> E["User Interface Layer<br/>CLI Commands<br/>Streamlit App Dashboard<br/>Downloads"]
+
+    F["Training Pipeline<br/>train.py + FER2013"] --> B
+
+    style A fill:#e3f2fd,stroke:#1565c0,stroke-width:1px
+    style B fill:#fff3e0,stroke:#ef6c00,stroke-width:1px
+    style C fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px
+    style D fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px
+    style E fill:#fce4ec,stroke:#c2185b,stroke-width:1px
+    style F fill:#eeeeee,stroke:#424242,stroke-width:1px
+```
+
+### Main Components
+
+| Layer | Main files | Purpose |
+|---|---|---|
+| Input | `app.py`, `analyze_video.py`, `dataset.py` | Receives webcam input, uploaded videos, local videos, and FER2013 data. |
+| Computer Vision Core | `face_detector.py`, `face_landmarks.py`, `emotion_analyzer.py`, `model.py` | Detects faces, extracts Face Mesh landmarks, and predicts model-based visible expression cues. |
+| Analysis | `presentation_metrics.py`, `recommendations.py` | Aggregates frame-level information into presentation scores and feedback. |
+| Output | `visualization.py`, `report_generator.py` | Creates overlays, charts, CSV files, JSON summaries, and Markdown reports. |
+| UI | `app.py`, `analyze_video.py`, `train.py` | Provides both command-line execution and the final Streamlit app. |
+
+### Design Rationale
+
+- The CLI pipeline remains independent so webcam and video processing stay stable.
+- Streamlit calls the existing pipeline instead of duplicating the Computer Vision logic.
+- Reports are exported in multiple formats: Markdown for humans, JSON for apps, and CSV for frame-level analysis.
+- The model uses `uncertain` predictions when confidence is low to avoid overclaiming facial expression results.
+
+---
+
 ## Repository Structure
 
 ```text
@@ -949,15 +1035,20 @@ Curated charts, screenshots, and example reports can be committed for README/dem
 Recommended files to commit for Phase 4 documentation:
 
 ```text
-outputs/screenshots/phase4/phase4_home.png
-outputs/screenshots/phase4/phase4_sidebar.png
+outputs/screenshots/phase4/phase4_home_sidebar.png
 outputs/screenshots/phase4/phase4_upload_video.png
 outputs/screenshots/phase4/phase4_results_dashboard.png
 outputs/screenshots/phase4/phase4_charts.png
 outputs/screenshots/phase4/phase4_download_reset.png
 ```
 
-The final Phase 4 demo video is hosted externally on YouTube, so no large demo video needs to be committed to Git.
+Optional final demo video if small enough:
+
+```text
+outputs/videos/phase4_final_demo.mp4
+```
+
+If the video is too large, keep it outside Git or upload it as a GitHub Release asset and replace the README link.
 
 ---
 
