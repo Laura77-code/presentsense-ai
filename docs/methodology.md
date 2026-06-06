@@ -1,66 +1,46 @@
-# Methodology
+# Methodology and Limitations
 
-## Phase 1: Video and Face Detection Pipeline
+## Face Detection
 
-PresentSense reads webcam or video frames using OpenCV `VideoCapture`, processes frames sequentially, and overlays results using OpenCV drawing functions. MediaPipe Face Detection is used to locate the presenter's face. If an output path is provided, annotated frames are written with OpenCV `VideoWriter`.
+MediaPipe detects the presenter's face in each frame. OpenCV draws the bounding box, FPS, and status overlays.
 
-## Phase 2: Visible Facial Expression Recognition
+## Expression Recognition
 
-The expression classifier is trained on FER2013 using transfer learning. The main demo model is a ResNet18 fine-tuned model. During inference, the detected face is cropped with margin, resized to 224 x 224, normalized with ImageNet statistics, and passed through the PyTorch model. The system displays a visible facial expression cue and confidence, not a psychological interpretation.
+1. The detected face is cropped with a margin.
+2. The crop is resized to `224 x 224`.
+3. The crop is normalized using ImageNet statistics.
+4. A PyTorch model predicts FER2013 expression classes.
+5. Softmax probabilities are smoothed over time.
+6. If confidence is below the threshold, the frame is labeled as `uncertain`.
 
-## Phase 3.5: Presentation Visual Metrics
+## Face Mesh Geometry
 
-Phase 3.5 uses a hybrid design:
+Face Mesh landmarks are used to estimate geometric presentation cues:
 
-1. A trained expression classifier estimates visible facial expression cues.
-2. MediaPipe Face Mesh landmarks provide simple geometric face measurements.
-3. Temporal aggregation converts frame-level signals into report-level scores.
+- Nose and eye symmetry for looking-forward approximation.
+- Face roll angle proxy.
+- Nose/landmark movement for head/face stability.
+- Mouth openness ratio over time.
+- Eye openness variation as part of expression variation.
 
-The metrics are heuristic and intended for presentation practice only.
+## Scores
 
-### Looking-Forward Approximation
-
-This is not eye tracking. It estimates whether the presenter is visually oriented toward the camera using:
-
-- detected face position in the frame,
-- face size,
-- nose position relative to the eye midpoint,
-- approximate face roll from the eye line.
-
-A frame is counted as looking-forward when the face is centered, reasonably sized, has limited roll, and the nose is close to the midpoint between both eyes.
-
-### Head/Face Stability
-
-This is not full-body posture analysis. It measures the stability of the face/head in the camera frame using:
-
-- movement of the face bounding-box center,
-- movement of the Face Mesh nose landmark.
-
-Excessive motion lowers the score, while small natural movement is allowed.
-
-### Visible Expression Variation
-
-This is not a measure of true emotion or personality. It estimates whether the visible facial cues vary over time using:
-
-- expression class diversity,
-- variation in expression probabilities,
-- mouth openness variation from Face Mesh,
-- eye openness variation from Face Mesh.
-
-### Expression Variety
-
-Expression variety measures whether a single expression cue dominates the whole video. A low score means that one predicted visible cue appears for most frames. This can also reflect model bias or difficult lighting conditions, so it should be interpreted carefully.
-
-### Overall Visual Score
-
-The overall score uses a weighted heuristic formula:
+The final score is a heuristic weighted score:
 
 ```text
 overall_score =
-    0.35 * looking_forward_score
-  + 0.30 * visible_expression_variation_score
-  + 0.25 * head_face_stability_score
-  + 0.10 * expression_variety_score
+  0.35 * looking_forward_score
++ 0.30 * visible_expression_variation_score
++ 0.25 * head_face_stability_score
++ 0.10 * expression_variety_score
 ```
 
-The final score is supportive feedback only, not an objective grade of presentation ability.
+## Limitations
+
+- PresentSense analyzes visual cues only.
+- It does not measure true emotion, confidence, personality, mental health, or absolute presentation quality.
+- Expression predictions can be affected by lighting, camera angle, occlusion, and FER2013 dataset bias.
+- `uncertain` means model confidence was below the selected threshold; it is not a negative judgment.
+- Looking-forward is an approximation, not real gaze tracking or eye tracking.
+- Head/face stability is not full-body posture analysis.
+- Audio, speech quality, slide content, and presentation structure are not analyzed.
